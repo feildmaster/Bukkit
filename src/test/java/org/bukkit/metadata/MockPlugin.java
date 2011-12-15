@@ -1,6 +1,8 @@
 package org.bukkit.metadata;
 
-import com.avaje.ebean.EbeanServer;
+import java.io.File;
+import java.io.InputStream;
+
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,8 +13,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.bukkit.util.config.Configuration;
 
-import java.io.File;
-import java.io.InputStream;
+import com.avaje.ebean.EbeanServer;
 
 /**
  * Including a mocking framework would be useful :)

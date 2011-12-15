@@ -1,13 +1,9 @@
 package org.bukkit.metadata;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
-import java.util.concurrent.Callable;
-
-import static org.junit.Assert.*;
-
-/**
- */
 public class FixedMetadataValueTest {
     @Test
     public void fixedIntTest() {
