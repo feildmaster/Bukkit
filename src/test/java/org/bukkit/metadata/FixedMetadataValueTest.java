@@ -22,4 +22,10 @@ public class FixedMetadataValueTest {
         FixedMetadataValue metadataValue = new FixedMetadataValue(null, "TEN");
         assertEquals(metadataValue.asString(), "TEN");
     }
+
+    @Test
+    public void fixedBooleanTest() {
+        FixedMetadataValue metadataValue = new FixedMetadataValue(null, true);
+        assertEquals(metadataValue.asBoolean(), true);
+    }
 }
