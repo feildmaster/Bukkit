@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -29,6 +28,10 @@ public class YamlConfiguration extends FileConfiguration {
     private final DumperOptions yamlOptions = new DumperOptions();
     private final Representer yamlRepresenter = new Representer();
     private final Yaml yaml = new Yaml(new SafeConstructor(), yamlRepresenter, yamlOptions);
+
+    public YamlConfiguration() {
+        options().fileEncoding = FileConfigurationOptions.Encoding.UTF8;
+    }
 
     @Override
     public String saveToString() {
@@ -143,7 +146,7 @@ public class YamlConfiguration extends FileConfiguration {
     }
     
     protected String parseHeader(String input) {
-        String[] lines = input.split("\r?\n", -1);
+        String[] lines = input.split("\r?\n|\r", -1); // MAC uses \r
         StringBuilder result = new StringBuilder();
         boolean readingHeader = true;
         

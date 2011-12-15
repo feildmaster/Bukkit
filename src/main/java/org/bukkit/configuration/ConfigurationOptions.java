@@ -78,4 +78,22 @@ public class ConfigurationOptions {
         this.copyDefaults = value;
         return this;
     }
+
+    /**
+     * Gets if this type of configuration is able to store null
+     *
+     * @return True if null can be stored
+     */
+    public boolean canStoreNull() {
+        return false;
+    }
+
+    /**
+     * Gets the value this type of configuration can store null as.
+     *
+     * @return Object that represents null
+     */
+    public Object getNullValue() {
+        return null;
+    }
 }

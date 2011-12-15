@@ -897,6 +897,10 @@ public class MemorySection implements ConfigurationSection {
 
     protected Object prepForStorage(Object input) {
         if (input == null) {
+            if(getRoot().options().canStoreNull()) {
+                return getRoot().options().getNullValue();
+            }
+
             throw new IllegalArgumentException("Cannot store null");
         }
         

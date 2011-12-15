@@ -8,6 +8,7 @@ import org.bukkit.configuration.*;
 public class FileConfigurationOptions extends MemoryConfigurationOptions {
     private String header = null;
     private boolean copyHeader = true;
+    protected Encoding fileEncoding = Encoding.UTF8;
     
     protected FileConfigurationOptions(MemoryConfiguration configuration) {
         super(configuration);
@@ -105,5 +106,16 @@ public class FileConfigurationOptions extends MemoryConfigurationOptions {
         copyHeader = value;
         
         return this;
+    }
+
+    public enum Encoding {
+        UTF8("UTF-8"),
+        ASCII("US-ASCII");
+
+        private final String value;
+
+        private Encoding(String v) {
+            value = v;
+        }
     }
 }

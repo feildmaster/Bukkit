@@ -66,4 +66,8 @@ public class YamlConfigurationOptions extends FileConfigurationOptions {
         this.indent = value;
         return this;
     }
+
+    public boolean canStoreNull() {
+        return true;
+    }
 }
