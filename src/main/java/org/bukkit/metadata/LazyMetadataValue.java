@@ -79,12 +79,8 @@ public class LazyMetadataValue implements MetadataValue {
      * @throws MetadataConversionException Thrown if the value cannot be converted to a double. Ex: String => double
      */
     public boolean asBoolean() throws MetadataConversionException {
-        try {
-            eval();
-            return internalValue != null && (internalValue.equalsIgnoreCase("true") || internalValue.equalsIgnoreCase("1") || internalValue.equalsIgnoreCase("1.0"));
-        } catch (NumberFormatException e) {
-            throw new MetadataConversionException("Could not convert metadata value of " + internalValue + " to type double.");
-        }
+        eval();
+        return internalValue != null && (internalValue.equalsIgnoreCase("true") || internalValue.equalsIgnoreCase("1") || internalValue.equalsIgnoreCase("1.0"));
     }
 
     /**
