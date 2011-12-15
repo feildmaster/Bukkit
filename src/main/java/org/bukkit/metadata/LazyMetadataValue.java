@@ -20,6 +20,7 @@ public class LazyMetadataValue implements MetadataValue {
 
     /**
      * Initialized a LazyMetadataValue object with the default CACHE_AFTER_FIRST_EVAL cache strategy.
+     *
      * @param owningPlugin the {@link Plugin} that created this metadata value.
      * @param lazyValue the lazy value assigned to this metadata value.
      */
@@ -29,6 +30,7 @@ public class LazyMetadataValue implements MetadataValue {
 
     /**
      * Initializes a LazyMetadataValue object with a specific cache strategy.
+     *
      * @param owningPlugin the {@link Plugin} that created this metadata value.
      * @param cacheStrategy determines the rules for caching this metadata value.
      * @param lazyValue the lazy value assigned to this metadata value.
@@ -42,6 +44,7 @@ public class LazyMetadataValue implements MetadataValue {
 
     /**
      * Converts the metadata value into an int and returns it.
+     *
      * @return the metadata value converted into an int.
      * @throws MetadataConversionException Thrown if the value cannot be converted to an int. Ex: String => int
      */
@@ -56,6 +59,7 @@ public class LazyMetadataValue implements MetadataValue {
 
     /**
      * Converts the metadata value into a double and returns it.
+     *
      * @return the metadata value converted into a double.
      * @throws MetadataConversionException Thrown if the value cannot be converted to a double. Ex: String => double
      */
@@ -68,8 +72,9 @@ public class LazyMetadataValue implements MetadataValue {
         }
     }
 
-     /**
+    /**
      * Converts the metadata value into a boolean and returns it.
+     *
      * @return the metadata value converted into a boolean.
      * @throws MetadataConversionException Thrown if the value cannot be converted to a double. Ex: String => double
      */
@@ -84,6 +89,7 @@ public class LazyMetadataValue implements MetadataValue {
 
     /**
      * Returns the metadata value as a string. This method will always succeed.
+     *
      * @return the metadata value converted into a string.
      */
     public String asString() {
@@ -93,6 +99,7 @@ public class LazyMetadataValue implements MetadataValue {
 
     /**
      * Returns the {@link Plugin} that created this metadata item.
+     *
      * @return the plugin that owns this metadata value.
      */
     public Plugin getOwningPlugin() {
@@ -101,10 +108,11 @@ public class LazyMetadataValue implements MetadataValue {
 
     /**
      * Lazily evaluates the value of this metadata item.
+     *
      * @throws MetadataEvaluationException if computing the metadata value fails.
      */
     private synchronized void eval() throws MetadataEvaluationException {
-        if(cacheStrategy == CacheStrategy.NEVER_CACHE || !internalValueEvaluated) {
+        if (cacheStrategy == CacheStrategy.NEVER_CACHE || !internalValueEvaluated) {
             try {
                 internalValue = lazyValue.call().toString();
                 internalValueEvaluated = true;
@@ -118,7 +126,7 @@ public class LazyMetadataValue implements MetadataValue {
      * Invalidates this metadata item's value. The next time the value is requested it will be recomputed.
      */
     public synchronized void invalidate() {
-        if(cacheStrategy != CacheStrategy.CACHE_ETERNALLY) {
+        if (cacheStrategy != CacheStrategy.CACHE_ETERNALLY) {
             internalValueEvaluated = false;
         }
     }
