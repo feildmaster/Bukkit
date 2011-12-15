@@ -11,90 +11,122 @@ public class LazyMetadataValueTest {
 
     @Test
     public void testLazyInt() {
-        subject = new LazyMetadataValue(null, new Callable<Object>() {
-            public Object call() throws Exception {
-                return 10;
-            }
-        });
+        int value = 10;
+        subject = makeSimpleCallable(value);
 
-        assertEquals(subject.asInt(), 10);
+        assertEquals(value, subject.asInt());
     }
 
     @Test
     public void testLazyDouble() {
-        subject = new LazyMetadataValue(null, new Callable<Object>() {
-            public Object call() throws Exception {
-                return 10.5;
-            }
-        });
+        double value = 10.5;
+        subject = makeSimpleCallable(value);
 
-        assertEquals(subject.asDouble(), 10.5, 0.01);
+        assertEquals(value, subject.asDouble(), 0.01);
     }
 
     @Test
     public void testLazyString() {
-        subject = new LazyMetadataValue(null, new Callable<Object>() {
+        String value = "TEN";
+        subject = makeSimpleCallable(value);
+
+        assertEquals(value, subject.asString());
+    }
+
+    @Test
+    public void testLazyBoolean() {
+        boolean value = false;
+        subject = makeSimpleCallable(value);
+
+        assertEquals(value, subject.asBoolean());
+    }
+
+    @Test(expected=MetadataConversionException.class)
+    public void testFailingInt() {
+        makeSimpleCallable("NotAnInt").asInt();
+    }
+
+    @Test(expected=MetadataConversionException.class)
+    public void testFailingDouble() {
+        makeSimpleCallable("NotADouble").asDouble();
+    }
+
+    @Test(expected=MetadataEvaluationException.class)
+    public void testEvalException() {
+        subject = new LazyMetadataValue(null, LazyMetadataValue.CacheStrategy.CACHE_AFTER_FIRST_EVAL, new Callable<Object>() {
             public Object call() throws Exception {
-                return "TEN";
+                throw new RuntimeException("Gotcha!");
             }
         });
-
-        assertEquals(subject.asString(), "TEN");
+        subject.asString();
     }
 
     @Test
     public void testCacheStrategyCacheAfterFirstEval() {
-        final Counter evals = new Counter();
+        final Counter counter = new Counter();
+        final int value = 10;
         subject = new LazyMetadataValue(null, LazyMetadataValue.CacheStrategy.CACHE_AFTER_FIRST_EVAL, new Callable<Object>() {
             public Object call() throws Exception {
-                evals.increment();
-                return 10;
+                counter.increment();
+                return value;
             }
         });
 
         subject.asInt();
         subject.asInt();
-        assertEquals(subject.asInt(), 10);
-        assertEquals(evals.value(), 1);
+        assertEquals(value, subject.asInt());
+        assertEquals(1, counter.value());
 
         subject.invalidate();
         subject.asInt();
-        assertEquals(evals.value(), 2);
+        assertEquals(2, counter.value());
     }
 
     @Test
     public void testCacheStrategyNeverCache() {
-        final Counter evals = new Counter();
+        final Counter counter = new Counter();
+        final int value = 10;
         subject = new LazyMetadataValue(null, LazyMetadataValue.CacheStrategy.NEVER_CACHE, new Callable<Object>() {
             public Object call() throws Exception {
-                evals.increment();
-                return 10;
+                counter.increment();
+                return value;
             }
         });
 
         subject.asInt();
         subject.asInt();
-        assertEquals(subject.asInt(), 10);
-        assertEquals(evals.value(), 3);
+        assertEquals(value, subject.asInt());
+        assertEquals(3, counter.value());
     }
 
     @Test
     public void testCacheStrategyEternally() {
-        final Counter evals = new Counter();
+        final Counter counter = new Counter();
+        final int value = 10;
         subject = new LazyMetadataValue(null, LazyMetadataValue.CacheStrategy.CACHE_ETERNALLY, new Callable<Object>() {
             public Object call() throws Exception {
-                evals.increment();
-                return 10;
+                counter.increment();
+                return value;
             }
         });
 
         subject.asInt();
         subject.asInt();
-        assertEquals(evals.value(), 1);
+        assertEquals(value, subject.asInt());
+        assertEquals(1, counter.value());
 
         subject.invalidate();
         subject.asInt();
-        assertEquals(evals.value(), 1);
+        assertEquals(value, subject.asInt());
+        assertEquals(1, counter.value());
+    }
+
+    private LazyMetadataValue makeSimpleCallable(final Object value) {
+        return new LazyMetadataValue(null, new Callable<Object>() {
+            public Object call() throws Exception {
+                return value;
+            }
+        });
     }
 
     private class Counter {
