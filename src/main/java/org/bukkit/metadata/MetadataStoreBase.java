@@ -2,10 +2,7 @@ package org.bukkit.metadata;
 
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class MetadataStoreBase<T> {
     private Map<String, List<MetadataValue>> metadataMap = new HashMap<String, List<MetadataValue>>();
@@ -55,9 +52,9 @@ public abstract class MetadataStoreBase<T> {
     public synchronized List<MetadataValue> getMetadata(T subject, String metadataKey) {
         String key = disambiguate(subject, metadataKey);
         if (metadataMap.containsKey(key)) {
-            return metadataMap.get(key);
+            return Collections.unmodifiableList(metadataMap.get(key));
         } else {
-            return new ArrayList<MetadataValue>();
+            return Collections.emptyList();
         }
     }
 
