@@ -8,24 +8,24 @@ public class FixedMetadataValueTest {
     @Test
     public void fixedIntTest() {
         FixedMetadataValue metadataValue = new FixedMetadataValue(null, 10);
-        assertEquals(metadataValue.asInt(), 10);
+        assertEquals(10, metadataValue.asInt());
     }
 
     @Test
     public void fixedDoubleTest() {
         FixedMetadataValue metadataValue = new FixedMetadataValue(null, 10.5);
-        assertEquals(metadataValue.asDouble(), 10.5, 0.01);
+        assertEquals(10.5, metadataValue.asDouble(), 0.01);
     }
 
     @Test
     public void fixedStringTest() {
         FixedMetadataValue metadataValue = new FixedMetadataValue(null, "TEN");
-        assertEquals(metadataValue.asString(), "TEN");
+        assertEquals("TEN", metadataValue.asString());
     }
 
     @Test
     public void fixedBooleanTest() {
         FixedMetadataValue metadataValue = new FixedMetadataValue(null, true);
-        assertEquals(metadataValue.asBoolean(), true);
+        assertEquals(true, metadataValue.asBoolean());
     }
 }

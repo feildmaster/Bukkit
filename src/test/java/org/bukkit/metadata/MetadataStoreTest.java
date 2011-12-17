@@ -80,10 +80,10 @@ public class MetadataStoreTest {
 
         for (MetadataValue mv : subject.getMetadata("subject", "key")) {
             if (mv.getOwningPlugin() == mockPlugin1) {
-                assertEquals(mv.asInt(), 20);
+                assertEquals(20, mv.asInt());
             }
             if (mv.getOwningPlugin() == mockPlugin2) {
-                assertEquals(mv.asInt(), 10);
+                assertEquals(10, mv.asInt());
             }
         }
     }
@@ -98,8 +98,8 @@ public class MetadataStoreTest {
         subject.removeMetadata("subject", "key", mockPlugin1);
 
         assertTrue(subject.hasMetadata("subject", "key"));
-        assertEquals(subject.getMetadata("subject", "key").size(), 1);
-        assertEquals(subject.getMetadata("subject", "key").get(0).asInt(), 20);
+        assertEquals(1, subject.getMetadata("subject", "key").size());
+        assertEquals(20, subject.getMetadata("subject", "key").get(0).asInt());
     }
 
     @Test
@@ -110,8 +110,8 @@ public class MetadataStoreTest {
         subject.removeMetadata("subject", "key", null);
 
         assertTrue(subject.hasMetadata("subject", "key"));
-        assertEquals(subject.getMetadata("subject", "key").size(), 1);
-        assertEquals(subject.getMetadata("subject", "key").get(0).asInt(), 10);
+        assertEquals(1, subject.getMetadata("subject", "key").size());
+        assertEquals(10, subject.getMetadata("subject", "key").get(0).asInt());
     }
 
     private class StringMetadataStore extends MetadataStoreBase<String> implements MetadataStore<String> {
