@@ -34,7 +34,7 @@ public abstract class MetadataStoreBase<T> {
         // is found in this list, replace the value rather than add a new one.
         List<MetadataValue> metadataList = metadataMap.get(key);
         for (int i = 0; i < metadataList.size(); i++) {
-            if (metadataList.get(i).getOwningPlugin() == newMetadataValue.getOwningPlugin()) {
+            if (samePlugin(metadataList.get(i).getOwningPlugin(), newMetadataValue.getOwningPlugin())) {
                 metadataList.set(i, newMetadataValue);
                 return;
             }
@@ -85,7 +85,7 @@ public abstract class MetadataStoreBase<T> {
         String key = disambiguate(subject, metadataKey);
         List<MetadataValue> metadataList = metadataMap.get(key);
         for (int i = 0; i < metadataList.size(); i++) {
-            if (metadataList.get(i).getOwningPlugin() == owningPlugin) {
+            if (samePlugin(metadataList.get(i).getOwningPlugin(), owningPlugin)) {
                 metadataList.remove(i);
             }
         }
@@ -101,11 +101,18 @@ public abstract class MetadataStoreBase<T> {
     public synchronized void invalidateAll(Plugin owningPlugin) {
         for (List<MetadataValue> values : metadataMap.values()) {
             for (MetadataValue value : values) {
-                if (value.getOwningPlugin() == owningPlugin) {
+                if (samePlugin(value.getOwningPlugin(), owningPlugin)) {
                     value.invalidate();
                 }
             }
         }
+    }
+
+    private boolean samePlugin(Plugin lhs, Plugin rhs) {
+        if (lhs == null || rhs == null) {
+           return false;
+        }
+        return lhs.getDescription().getFullName().equals(rhs.getDescription().getFullName());
     }
 
     /**
