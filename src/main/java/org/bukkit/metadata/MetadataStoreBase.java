@@ -6,6 +6,7 @@ import java.util.*;
 
 public abstract class MetadataStoreBase<T> {
     private Map<String, List<MetadataValue>> metadataMap = new HashMap<String, List<MetadataValue>>();
+    private WeakHashMap<T, String> disambiguationCache = new WeakHashMap<T, String>();
 
     /**
      * Adds a metadata value to an object. Each metadata value is owned by a specific{@link Plugin}.
@@ -23,7 +24,7 @@ public abstract class MetadataStoreBase<T> {
      * @param newMetadataValue The metadata value to apply.
      */
     public synchronized void setMetadata(T subject, String metadataKey, MetadataValue newMetadataValue) {
-        String key = disambiguate(subject, metadataKey);
+        String key = cachedDisambiguate(subject, metadataKey);
         if (!metadataMap.containsKey(key)) {
             metadataMap.put(key, new ArrayList<MetadataValue>());
         }
@@ -50,7 +51,7 @@ public abstract class MetadataStoreBase<T> {
      * @return A list of values, one for each plugin that has set the requested value.
      */
     public synchronized List<MetadataValue> getMetadata(T subject, String metadataKey) {
-        String key = disambiguate(subject, metadataKey);
+        String key = cachedDisambiguate(subject, metadataKey);
         if (metadataMap.containsKey(key)) {
             return Collections.unmodifiableList(metadataMap.get(key));
         } else {
@@ -66,7 +67,7 @@ public abstract class MetadataStoreBase<T> {
      * @return the existence of the metadataKey within subject.
      */
     public synchronized boolean hasMetadata(T subject, String metadataKey) {
-        String key = disambiguate(subject, metadataKey);
+        String key = cachedDisambiguate(subject, metadataKey);
         return metadataMap.containsKey(key);
     }
 
@@ -79,7 +80,7 @@ public abstract class MetadataStoreBase<T> {
      * @param owningPlugin the plugin attempting to remove a metadata item.
      */
     public synchronized void removeMetadata(T subject, String metadataKey, Plugin owningPlugin) {
-        String key = disambiguate(subject, metadataKey);
+        String key = cachedDisambiguate(subject, metadataKey);
         List<MetadataValue> metadataList = metadataMap.get(key);
         for (int i = 0; i < metadataList.size(); i++) {
             if (samePlugin(metadataList.get(i).getOwningPlugin(), owningPlugin)) {
@@ -105,11 +106,37 @@ public abstract class MetadataStoreBase<T> {
         }
     }
 
+    /**
+     * Compares two plugins to see if they are actually the same plugin. Required because plugin instances change
+     * between server /resets.
+     * @param lhs
+     * @param rhs
+     * @return
+     */
     private boolean samePlugin(Plugin lhs, Plugin rhs) {
         if (lhs == null || rhs == null) {
            return false;
         }
         return lhs.getDescription().getFullName().equals(rhs.getDescription().getFullName());
+    }
+
+    /**
+     * Caches the results of calls to {@link MetadataStoreBase#disambiguate(Object, String)} in a {@link WeakHashMap}. Doing so maintains a
+     * <a href="http://www.codeinstructions.com/2008/09/weakhashmap-is-not-cache-understanding.html">canonical list</a>
+     * of disambiguation strings for objects in memory. When those objects are garbage collected, the disambiguation string
+     * in the list is aggressively garbage collected as well.
+     * @param subject The object for which this key is being generated.
+     * @param metadataKey The name identifying the metadata value.
+     * @return a unique metadata key for the given subject.
+     */
+    private String cachedDisambiguate(T subject, String metadataKey) {
+        if (disambiguationCache.containsKey(subject)) {
+            return disambiguationCache.get(subject);
+        } else {
+            String disambiguation = disambiguate(subject, metadataKey);
+            disambiguationCache.put(subject, disambiguation);
+            return disambiguation;
+        }
     }
 
     /**
