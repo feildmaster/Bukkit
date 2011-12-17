@@ -15,7 +15,7 @@ public class MetadataStoreTest {
 
     @Test
     public void testMetadataStore() {
-        subject.setMetadata("subject", "key", new FixedMetadataValue(new MockPlugin(), 10));
+        subject.setMetadata("subject", "key", new FixedMetadataValue(new MockPlugin("x"), 10));
 
         assertTrue(subject.hasMetadata("subject", "key"));
         List<MetadataValue> values = subject.getMetadata("subject", "key");
@@ -33,7 +33,7 @@ public class MetadataStoreTest {
     public void testInvalidateAll() {
         final Counter counter = new Counter();
 
-        MockPlugin mockPlugin = new MockPlugin();
+        MockPlugin mockPlugin = new MockPlugin("x");
 
         subject.setMetadata("subject", "key", new LazyMetadataValue(mockPlugin, new Callable<Object>() {
             public Object call() throws Exception {
@@ -53,7 +53,7 @@ public class MetadataStoreTest {
     public void testInvalidateAllButActuallyNothing() {
         final Counter counter = new Counter();
 
-        MockPlugin mockPlugin = new MockPlugin();
+        MockPlugin mockPlugin = new MockPlugin("x");
 
         subject.setMetadata("subject", "key", new LazyMetadataValue(mockPlugin, new Callable<Object>() {
             public Object call() throws Exception {
@@ -71,8 +71,8 @@ public class MetadataStoreTest {
 
     @Test
     public void testMetadataReplace() {
-        MockPlugin mockPlugin1 = new MockPlugin();
-        MockPlugin mockPlugin2 = new MockPlugin();
+        MockPlugin mockPlugin1 = new MockPlugin("x");
+        MockPlugin mockPlugin2 = new MockPlugin("y");
 
         subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin1, 10));
         subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin2, 10));
@@ -90,8 +90,8 @@ public class MetadataStoreTest {
 
     @Test
     public void testMetadataRemove() {
-        MockPlugin mockPlugin1 = new MockPlugin();
-        MockPlugin mockPlugin2 = new MockPlugin();
+        MockPlugin mockPlugin1 = new MockPlugin("x");
+        MockPlugin mockPlugin2 = new MockPlugin("y");
 
         subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin1, 10));
         subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin2, 20));
@@ -104,7 +104,7 @@ public class MetadataStoreTest {
 
     @Test
     public void testMetadataRemoveForNonExistingPlugin() {
-        MockPlugin mockPlugin1 = new MockPlugin();
+        MockPlugin mockPlugin1 = new MockPlugin("x");
 
         subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin1, 10));
         subject.removeMetadata("subject", "key", null);

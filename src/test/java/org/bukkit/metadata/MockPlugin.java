@@ -19,12 +19,18 @@ import com.avaje.ebean.EbeanServer;
  * Including a mocking framework would be useful :)
  */
 public class MockPlugin implements Plugin {
+    private String pluginName;
+    
+    public MockPlugin(String pluginName) {
+        this.pluginName = pluginName;
+    }
+    
     public File getDataFolder() {
         return null;
     }
 
     public PluginDescriptionFile getDescription() {
-        return null;
+        return new PluginDescriptionFile(pluginName, "1.0", "test.test");
     }
 
     public Configuration getConfiguration() {
