@@ -12,11 +12,11 @@ public interface MetadataValue {
     public Object value();
 
     /**
-     * Returns the {@link Plugin} that created this metadata item.
+     * Returns the name of the {@link Plugin} that created this metadata item.
      *
-     * @return the plugin that owns this metadata value.
+     * @return the name of the plugin that owns this metadata value.
      */
-    public Plugin getOwningPlugin();
+    public String getOwningPlugin();
 
     /**
      * Invalidates this metadata item, forcing it to recompute when next accessed.

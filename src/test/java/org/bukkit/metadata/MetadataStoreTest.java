@@ -54,6 +54,7 @@ public class MetadataStoreTest {
         final Counter counter = new Counter();
 
         MockPlugin mockPlugin = new MockPlugin("x");
+        MockPlugin mockPlugin2 = new MockPlugin("y");
 
         subject.setMetadata("subject", "key", new LazyMetadataValue(mockPlugin, new Callable<Object>() {
             public Object call() throws Exception {
@@ -64,7 +65,7 @@ public class MetadataStoreTest {
 
         assertTrue(subject.hasMetadata("subject", "key"));
         subject.getMetadata("subject", "key").get(0).value();
-        subject.invalidateAll(null);
+        subject.invalidateAll(mockPlugin2);
         subject.getMetadata("subject", "key").get(0).value();
         assertEquals(1, counter.value());
     }
@@ -79,10 +80,10 @@ public class MetadataStoreTest {
         subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin1, 20));
 
         for (MetadataValue mv : subject.getMetadata("subject", "key")) {
-            if (mv.getOwningPlugin() == mockPlugin1) {
+            if (mv.getOwningPlugin() == mockPlugin1.getDescription().getName()) {
                 assertEquals(20, mv.value());
             }
-            if (mv.getOwningPlugin() == mockPlugin2) {
+            if (mv.getOwningPlugin() == mockPlugin2.getDescription().getName()) {
                 assertEquals(10, mv.value());
             }
         }
@@ -105,9 +106,10 @@ public class MetadataStoreTest {
     @Test
     public void testMetadataRemoveForNonExistingPlugin() {
         MockPlugin mockPlugin1 = new MockPlugin("x");
+        MockPlugin mockPlugin2 = new MockPlugin("y");
 
         subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin1, 10));
-        subject.removeMetadata("subject", "key", null);
+        subject.removeMetadata("subject", "key", mockPlugin2);
 
         assertTrue(subject.hasMetadata("subject", "key"));
         assertEquals(1, subject.getMetadata("subject", "key").size());

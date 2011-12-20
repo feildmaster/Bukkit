@@ -32,7 +32,7 @@ public abstract class MetadataStoreBase<T> {
         // is found in this list, replace the value rather than add a new one.
         List<MetadataValue> metadataList = metadataMap.get(key);
         for (int i = 0; i < metadataList.size(); i++) {
-            if (samePlugin(metadataList.get(i).getOwningPlugin(), newMetadataValue.getOwningPlugin())) {
+            if (metadataList.get(i).getOwningPlugin().equals(newMetadataValue.getOwningPlugin())) {
                 metadataList.set(i, newMetadataValue);
                 return;
             }
@@ -83,7 +83,7 @@ public abstract class MetadataStoreBase<T> {
         String key = cachedDisambiguate(subject, metadataKey);
         List<MetadataValue> metadataList = metadataMap.get(key);
         for (int i = 0; i < metadataList.size(); i++) {
-            if (samePlugin(metadataList.get(i).getOwningPlugin(), owningPlugin)) {
+            if (metadataList.get(i).getOwningPlugin().equals(owningPlugin.getDescription().getName())) {
                 metadataList.remove(i);
             }
         }
@@ -97,27 +97,17 @@ public abstract class MetadataStoreBase<T> {
      * @param owningPlugin the plugin requesting the invalidation.
      */
     public synchronized void invalidateAll(Plugin owningPlugin) {
+        if(owningPlugin == null) {
+            throw new IllegalArgumentException("owningPlugin cannot be null");
+        }
+
         for (List<MetadataValue> values : metadataMap.values()) {
             for (MetadataValue value : values) {
-                if (samePlugin(value.getOwningPlugin(), owningPlugin)) {
+                if (value.getOwningPlugin().equals(owningPlugin.getDescription().getName())) {
                     value.invalidate();
                 }
             }
         }
-    }
-
-    /**
-     * Compares two plugins to see if they are actually the same plugin. Required because plugin instances change
-     * between server /resets.
-     * @param lhs
-     * @param rhs
-     * @return
-     */
-    private boolean samePlugin(Plugin lhs, Plugin rhs) {
-        if (lhs == null || rhs == null) {
-           return false;
-        }
-        return lhs.getDescription().getFullName().equals(rhs.getDescription().getFullName());
     }
 
     /**
