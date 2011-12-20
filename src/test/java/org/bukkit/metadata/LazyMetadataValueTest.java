@@ -14,7 +14,7 @@ public class LazyMetadataValueTest {
         int value = 10;
         subject = makeSimpleCallable(value);
 
-        assertEquals(value, subject.asInt());
+        assertEquals(value, subject.value());
     }
 
     @Test
@@ -22,7 +22,7 @@ public class LazyMetadataValueTest {
         double value = 10.5;
         subject = makeSimpleCallable(value);
 
-        assertEquals(value, subject.asDouble(), 0.01);
+        assertEquals(value, (Double)subject.value(), 0.01);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class LazyMetadataValueTest {
         String value = "TEN";
         subject = makeSimpleCallable(value);
 
-        assertEquals(value, subject.asString());
+        assertEquals(value, subject.value());
     }
 
     @Test
@@ -38,17 +38,7 @@ public class LazyMetadataValueTest {
         boolean value = false;
         subject = makeSimpleCallable(value);
 
-        assertEquals(value, subject.asBoolean());
-    }
-
-    @Test(expected=MetadataConversionException.class)
-    public void testFailingInt() {
-        makeSimpleCallable("NotAnInt").asInt();
-    }
-
-    @Test(expected=MetadataConversionException.class)
-    public void testFailingDouble() {
-        makeSimpleCallable("NotADouble").asDouble();
+        assertEquals(value, subject.value());
     }
 
     @Test(expected=MetadataEvaluationException.class)
@@ -58,7 +48,7 @@ public class LazyMetadataValueTest {
                 throw new RuntimeException("Gotcha!");
             }
         });
-        subject.asString();
+        subject.value();
     }
 
     @Test
@@ -72,13 +62,13 @@ public class LazyMetadataValueTest {
             }
         });
 
-        subject.asInt();
-        subject.asInt();
-        assertEquals(value, subject.asInt());
+        subject.value();
+        subject.value();
+        assertEquals(value, subject.value());
         assertEquals(1, counter.value());
 
         subject.invalidate();
-        subject.asInt();
+        subject.value();
         assertEquals(2, counter.value());
     }
 
@@ -93,9 +83,9 @@ public class LazyMetadataValueTest {
             }
         });
 
-        subject.asInt();
-        subject.asInt();
-        assertEquals(value, subject.asInt());
+        subject.value();
+        subject.value();
+        assertEquals(value, subject.value());
         assertEquals(3, counter.value());
     }
 
@@ -110,14 +100,14 @@ public class LazyMetadataValueTest {
             }
         });
 
-        subject.asInt();
-        subject.asInt();
-        assertEquals(value, subject.asInt());
+        subject.value();
+        subject.value();
+        assertEquals(value, subject.value());
         assertEquals(1, counter.value());
 
         subject.invalidate();
-        subject.asInt();
-        assertEquals(value, subject.asInt());
+        subject.value();
+        assertEquals(value, subject.value());
         assertEquals(1, counter.value());
     }
 

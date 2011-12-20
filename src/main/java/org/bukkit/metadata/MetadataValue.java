@@ -5,35 +5,11 @@ import org.bukkit.plugin.Plugin;
 public interface MetadataValue {
 
     /**
-     * Attempts to convert this metadata value to an int and return it.
+     * Fetches the value of this metadata item.
      *
-     * @return the metadata value converted into an int.
-     * @throws MetadataConversionException when metadata conversion fails.
+     * @return the metadata value.
      */
-    public int asInt() throws MetadataConversionException;
-
-    /**
-     * Attempts to convert this metadata value to a double and return it.
-     *
-     * @return the metadata value converted into a double.
-     * @throws MetadataConversionException when metadata conversion fails.
-     */
-    public double asDouble() throws MetadataConversionException;
-
-    /**
-     * Attempts to convert this metadata value to a boolean and return it.
-     *
-     * @return the metadata value converted into a boolean.
-     * @throws MetadataConversionException when metadata conversion fails.
-     */
-    public boolean asBoolean() throws MetadataConversionException;
-
-    /**
-     * Returns the String representation of this metadata item.
-     *
-     * @return the metadata value converted into a string.
-     */
-    public String asString();
+    public Object value();
 
     /**
      * Returns the {@link Plugin} that created this metadata item.
