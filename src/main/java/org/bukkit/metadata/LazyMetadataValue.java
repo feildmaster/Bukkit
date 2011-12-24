@@ -1,6 +1,7 @@
 package org.bukkit.metadata;
 
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.NumberConversions;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
@@ -75,6 +76,93 @@ public class LazyMetadataValue implements MetadataValue {
             return null;
         } else {
             return value;
+        }
+    }
+
+    /**
+     * Attempts to convert the value of this metadata item into an int.
+     *
+     * @return the value as an int.
+     */
+    public int asInt() {
+        return NumberConversions.toInt(value());
+    }
+
+    /**
+     * Attempts to convert the value of this metadata item into a float.
+     *
+     * @return the value as a float.
+     */
+    public float asFloat() {
+        return NumberConversions.toFloat(value());
+    }
+
+    /**
+     * Attempts to convert the value of this metadata item into a double.
+     *
+     * @return the value as a double.
+     */
+    public double asDouble() {
+        return NumberConversions.toDouble(value());
+    }
+
+    /**
+     * Attempts to convert the value of this metadata item into a long.
+     *
+     * @return the value as a long.
+     */
+    public long asLong() {
+        return NumberConversions.toLong(value());
+    }
+
+    /**
+     * Attempts to convert the value of this metadata item into a short.
+     *
+     * @return the value as a short.
+     */
+    public short asShort() {
+        return NumberConversions.toShort(value());
+    }
+
+    /**
+     * Attempts to convert the value of this metadata item into a byte.
+     *
+     * @return the value as a byte.
+     */
+    public byte asByte() {
+        return NumberConversions.toByte(value());
+    }
+
+    /**
+     * Attempts to convert the value of this metadata item into a boolean.
+     *
+     * @return the value as a boolean.
+     */
+    public boolean asBoolean() {
+        Object value = value();
+        if (value instanceof Boolean) {
+            return (Boolean)value;
+        }
+        if (value instanceof Number) {
+            return ((Number)value).intValue() != 0;
+        }
+        if (value instanceof String) {
+            return ((String)value).equalsIgnoreCase("TRUE");
+        }
+        return value != null;
+    }
+
+    /**
+     * Attempts to convert the value of this metadata item into a string.
+     *
+     * @return the value as a string.
+     */
+    public String asString() {
+        Object value = value();
+        if (value != null) {
+            return value.toString();
+        } else {
+            return "";
         }
     }
 
