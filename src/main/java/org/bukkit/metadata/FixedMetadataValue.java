@@ -10,12 +10,82 @@ import java.util.concurrent.Callable;
  */
 public class FixedMetadataValue extends LazyMetadataValue {
     /**
+     * Initializes a FixedMetadataValue with an Object
+     *
+     * @param owningPlugin the {@link Plugin} that created this metadata value.
+     * @param value the value assigned to this metadata value.
+     */
+    public FixedMetadataValue(Plugin owningPlugin, final Object value) {
+        super(owningPlugin, CacheStrategy.CACHE_ETERNALLY, new Callable<Object>() {
+            public Object call() throws Exception {
+                return value;
+            }
+        });
+    }
+
+    /**
      * Initializes a FixedMetadataValue as an int
      *
      * @param owningPlugin the {@link Plugin} that created this metadata value.
      * @param value the value assigned to this metadata value.
      */
     public FixedMetadataValue(Plugin owningPlugin, final int value) {
+        super(owningPlugin, CacheStrategy.CACHE_ETERNALLY, new Callable<Object>() {
+            public Object call() throws Exception {
+                return value;
+            }
+        });
+    }
+
+    /**
+     * Initializes a FixedMetadataValue as a float
+     *
+     * @param owningPlugin the {@link Plugin} that created this metadata value.
+     * @param value the value assigned to this metadata value.
+     */
+    public FixedMetadataValue(Plugin owningPlugin, final float value) {
+        super(owningPlugin, CacheStrategy.CACHE_ETERNALLY, new Callable<Object>() {
+            public Object call() throws Exception {
+                return value;
+            }
+        });
+    }
+
+    /**
+     * Initializes a FixedMetadataValue as a long
+     *
+     * @param owningPlugin the {@link Plugin} that created this metadata value.
+     * @param value the value assigned to this metadata value.
+     */
+    public FixedMetadataValue(Plugin owningPlugin, final long value) {
+        super(owningPlugin, CacheStrategy.CACHE_ETERNALLY, new Callable<Object>() {
+            public Object call() throws Exception {
+                return value;
+            }
+        });
+    }
+
+    /**
+     * Initializes a FixedMetadataValue as a short
+     *
+     * @param owningPlugin the {@link Plugin} that created this metadata value.
+     * @param value the value assigned to this metadata value.
+     */
+    public FixedMetadataValue(Plugin owningPlugin, final short value) {
+        super(owningPlugin, CacheStrategy.CACHE_ETERNALLY, new Callable<Object>() {
+            public Object call() throws Exception {
+                return value;
+            }
+        });
+    }
+
+    /**
+     * Initializes a FixedMetadataValue as a byte
+     *
+     * @param owningPlugin the {@link Plugin} that created this metadata value.
+     * @param value the value assigned to this metadata value.
+     */
+    public FixedMetadataValue(Plugin owningPlugin, final byte value) {
         super(owningPlugin, CacheStrategy.CACHE_ETERNALLY, new Callable<Object>() {
             public Object call() throws Exception {
                 return value;

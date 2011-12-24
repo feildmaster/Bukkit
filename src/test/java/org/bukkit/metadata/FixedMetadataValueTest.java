@@ -39,4 +39,32 @@ public class FixedMetadataValueTest {
         FixedMetadataValue metadataValue = new FixedMetadataValue(mockPlugin, true);
         assertEquals(null, metadataValue.value());
     }
+
+    @Test
+    public void fixedFloatTest() {
+        MockPlugin mockPlugin = new MockPlugin("x");
+        FixedMetadataValue metadataValue = new FixedMetadataValue(mockPlugin, (float)10.5);
+        assertEquals((float)10.5, metadataValue.value());
+    }
+
+    @Test
+    public void fixedLongTest() {
+        MockPlugin mockPlugin = new MockPlugin("x");
+        FixedMetadataValue metadataValue = new FixedMetadataValue(mockPlugin, (long)10);
+        assertEquals((long)10, metadataValue.value());
+    }
+
+    @Test
+    public void fixedShortTest() {
+        MockPlugin mockPlugin = new MockPlugin("x");
+        FixedMetadataValue metadataValue = new FixedMetadataValue(mockPlugin, (short)10);
+        assertEquals((short)10, metadataValue.value());
+    }
+
+    @Test
+    public void fixedByteTest() {
+        MockPlugin mockPlugin = new MockPlugin("x");
+        FixedMetadataValue metadataValue = new FixedMetadataValue(mockPlugin, (byte)10);
+        assertEquals((byte)10, metadataValue.value());
+    }
 }
