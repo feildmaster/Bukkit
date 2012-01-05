@@ -14,7 +14,7 @@ import org.bukkit.metadata.Metadatable;
  * the state of the block and you will not know, or they may change the block to
  * another type entirely, causing your BlockState to become invalid.
  */
-public interface BlockState extends Metadatable{
+public interface BlockState extends Metadatable {
 
     /**
      * Gets the block represented by this BlockState

@@ -1,11 +1,10 @@
 package org.bukkit.metadata;
 
+import java.lang.ref.SoftReference;
+import java.util.concurrent.Callable;
+
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.NumberConversions;
-
-import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
-import java.util.concurrent.Callable;
 
 /**
  * The LazyMetadataValue class implements a type of metadata that is not computed until another plugin asks for it.
@@ -49,7 +48,6 @@ public class LazyMetadataValue implements MetadataValue {
             throw new IllegalArgumentException("lazyValue cannot be null");
         }
 
-
         this.lazyValue = lazyValue;
         this.owningPlugin = owningPlugin.getDescription().getName().intern();
         this.cacheStrategy = cacheStrategy;
@@ -74,9 +72,8 @@ public class LazyMetadataValue implements MetadataValue {
         Object value = internalValue.get();
         if (value == ACTUALLY_NULL) {
             return null;
-        } else {
-            return value;
         }
+        return value;
     }
 
     /**
@@ -141,13 +138,13 @@ public class LazyMetadataValue implements MetadataValue {
     public boolean asBoolean() {
         Object value = value();
         if (value instanceof Boolean) {
-            return (Boolean)value;
+            return (Boolean) value;
         }
         if (value instanceof Number) {
-            return ((Number)value).intValue() != 0;
+            return ((Number) value).intValue() != 0;
         }
         if (value instanceof String) {
-            return ((String)value).equalsIgnoreCase("TRUE");
+            return ((String) value).equalsIgnoreCase("TRUE");
         }
         return value != null;
     }
@@ -161,9 +158,8 @@ public class LazyMetadataValue implements MetadataValue {
         Object value = value();
         if (value != null) {
             return value.toString();
-        } else {
-            return "";
         }
+        return "";
     }
 
     /**
