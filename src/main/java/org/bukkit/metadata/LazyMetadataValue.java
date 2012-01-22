@@ -90,12 +90,15 @@ public class LazyMetadataValue implements MetadataValue {
         if (value instanceof Boolean) {
             return (Boolean) value;
         }
+
         if (value instanceof Number) {
             return ((Number) value).intValue() != 0;
         }
+
         if (value instanceof String) {
-            return Boolean.getBoolean((String) value);
+            return Boolean.parseBoolean((String) value);
         }
+
         return value != null;
     }
 
