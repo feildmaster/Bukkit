@@ -53,20 +53,10 @@ public class LazyMetadataValue implements MetadataValue {
         this.cacheStrategy = cacheStrategy;
     }
 
-    /**
-     * Returns the name of the {@link Plugin} that created this metadata item.
-     *
-     * @return the name of the plugin that owns this metadata value.
-     */
     public String getOwningPlugin() {
         return owningPlugin;
     }
 
-    /**
-     * Fetches the value of this metadata item.
-     *
-     * @return the metadata value.
-     */
     public Object value() {
         eval();
         Object value = internalValue.get();
@@ -76,65 +66,30 @@ public class LazyMetadataValue implements MetadataValue {
         return value;
     }
 
-    /**
-     * Attempts to convert the value of this metadata item into an int.
-     *
-     * @return the value as an int.
-     */
     public int asInt() {
         return NumberConversions.toInt(value());
     }
 
-    /**
-     * Attempts to convert the value of this metadata item into a float.
-     *
-     * @return the value as a float.
-     */
     public float asFloat() {
         return NumberConversions.toFloat(value());
     }
 
-    /**
-     * Attempts to convert the value of this metadata item into a double.
-     *
-     * @return the value as a double.
-     */
     public double asDouble() {
         return NumberConversions.toDouble(value());
     }
 
-    /**
-     * Attempts to convert the value of this metadata item into a long.
-     *
-     * @return the value as a long.
-     */
     public long asLong() {
         return NumberConversions.toLong(value());
     }
 
-    /**
-     * Attempts to convert the value of this metadata item into a short.
-     *
-     * @return the value as a short.
-     */
     public short asShort() {
         return NumberConversions.toShort(value());
     }
 
-    /**
-     * Attempts to convert the value of this metadata item into a byte.
-     *
-     * @return the value as a byte.
-     */
     public byte asByte() {
         return NumberConversions.toByte(value());
     }
 
-    /**
-     * Attempts to convert the value of this metadata item into a boolean.
-     *
-     * @return the value as a boolean.
-     */
     public boolean asBoolean() {
         Object value = value();
         if (value instanceof Boolean) {
@@ -149,11 +104,6 @@ public class LazyMetadataValue implements MetadataValue {
         return value != null;
     }
 
-    /**
-     * Attempts to convert the value of this metadata item into a string.
-     *
-     * @return the value as a string.
-     */
     public String asString() {
         Object value = value();
         if (value != null) {
@@ -181,9 +131,6 @@ public class LazyMetadataValue implements MetadataValue {
         }
     }
 
-    /**
-     * Invalidates this metadata item's value. The next time the value is requested it will be recomputed.
-     */
     public synchronized void invalidate() {
         if (cacheStrategy != CacheStrategy.CACHE_ETERNALLY) {
             internalValue.clear();
