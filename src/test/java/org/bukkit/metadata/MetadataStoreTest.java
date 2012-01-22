@@ -7,15 +7,19 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.messaging.TestPlugin;
 import org.junit.Test;
 
 public class MetadataStoreTest {
+    private Plugin pluginX = new TestPlugin("x");
+    private Plugin pluginY = new TestPlugin("y");
 
     StringMetadataStore subject = new StringMetadataStore();
 
     @Test
     public void testMetadataStore() {
-        subject.setMetadata("subject", "key", new FixedMetadataValue(new MockPlugin("x"), 10));
+        subject.setMetadata("subject", "key", new FixedMetadataValue(pluginX, 10));
 
         assertTrue(subject.hasMetadata("subject", "key"));
         List<MetadataValue> values = subject.getMetadata("subject", "key");
@@ -33,9 +37,7 @@ public class MetadataStoreTest {
     public void testInvalidateAll() {
         final Counter counter = new Counter();
 
-        MockPlugin mockPlugin = new MockPlugin("x");
-
-        subject.setMetadata("subject", "key", new LazyMetadataValue(mockPlugin, new Callable<Object>() {
+        subject.setMetadata("subject", "key", new LazyMetadataValue(pluginX, new Callable<Object>() {
             public Object call() throws Exception {
                 counter.increment();
                 return 10;
@@ -44,7 +46,7 @@ public class MetadataStoreTest {
 
         assertTrue(subject.hasMetadata("subject", "key"));
         subject.getMetadata("subject", "key").get(0).value();
-        subject.invalidateAll(mockPlugin);
+        subject.invalidateAll(pluginX);
         subject.getMetadata("subject", "key").get(0).value();
         assertEquals(2, counter.value());
     }
@@ -53,10 +55,7 @@ public class MetadataStoreTest {
     public void testInvalidateAllButActuallyNothing() {
         final Counter counter = new Counter();
 
-        MockPlugin mockPlugin = new MockPlugin("x");
-        MockPlugin mockPlugin2 = new MockPlugin("y");
-
-        subject.setMetadata("subject", "key", new LazyMetadataValue(mockPlugin, new Callable<Object>() {
+        subject.setMetadata("subject", "key", new LazyMetadataValue(pluginX, new Callable<Object>() {
             public Object call() throws Exception {
                 counter.increment();
                 return 10;
@@ -65,25 +64,22 @@ public class MetadataStoreTest {
 
         assertTrue(subject.hasMetadata("subject", "key"));
         subject.getMetadata("subject", "key").get(0).value();
-        subject.invalidateAll(mockPlugin2);
+        subject.invalidateAll(pluginY);
         subject.getMetadata("subject", "key").get(0).value();
         assertEquals(1, counter.value());
     }
 
     @Test
     public void testMetadataReplace() {
-        MockPlugin mockPlugin1 = new MockPlugin("x");
-        MockPlugin mockPlugin2 = new MockPlugin("y");
-
-        subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin1, 10));
-        subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin2, 10));
-        subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin1, 20));
+        subject.setMetadata("subject", "key", new FixedMetadataValue(pluginX, 10));
+        subject.setMetadata("subject", "key", new FixedMetadataValue(pluginY, 10));
+        subject.setMetadata("subject", "key", new FixedMetadataValue(pluginX, 20));
 
         for (MetadataValue mv : subject.getMetadata("subject", "key")) {
-            if (mv.getOwningPlugin() == mockPlugin1.getDescription().getName()) {
+            if (mv.getOwningPlugin().equals(pluginX)) {
                 assertEquals(20, mv.value());
             }
-            if (mv.getOwningPlugin() == mockPlugin2.getDescription().getName()) {
+            if (mv.getOwningPlugin().equals(pluginY)) {
                 assertEquals(10, mv.value());
             }
         }
@@ -91,12 +87,9 @@ public class MetadataStoreTest {
 
     @Test
     public void testMetadataRemove() {
-        MockPlugin mockPlugin1 = new MockPlugin("x");
-        MockPlugin mockPlugin2 = new MockPlugin("y");
-
-        subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin1, 10));
-        subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin2, 20));
-        subject.removeMetadata("subject", "key", mockPlugin1);
+        subject.setMetadata("subject", "key", new FixedMetadataValue(pluginX, 10));
+        subject.setMetadata("subject", "key", new FixedMetadataValue(pluginY, 20));
+        subject.removeMetadata("subject", "key", pluginX);
 
         assertTrue(subject.hasMetadata("subject", "key"));
         assertEquals(1, subject.getMetadata("subject", "key").size());
@@ -105,11 +98,8 @@ public class MetadataStoreTest {
 
     @Test
     public void testMetadataRemoveForNonExistingPlugin() {
-        MockPlugin mockPlugin1 = new MockPlugin("x");
-        MockPlugin mockPlugin2 = new MockPlugin("y");
-
-        subject.setMetadata("subject", "key", new FixedMetadataValue(mockPlugin1, 10));
-        subject.removeMetadata("subject", "key", mockPlugin2);
+        subject.setMetadata("subject", "key", new FixedMetadataValue(pluginX, 10));
+        subject.removeMetadata("subject", "key", pluginY);
 
         assertTrue(subject.hasMetadata("subject", "key"));
         assertEquals(1, subject.getMetadata("subject", "key").size());

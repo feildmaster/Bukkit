@@ -16,6 +16,7 @@
 package org.bukkit.metadata;
 
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.messaging.TestPlugin;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 /**
  */
 public class MetadataConversionTest {
-    private Plugin plugin = new MockPlugin("x");
+    private Plugin plugin = new TestPlugin("x");
     private FixedMetadataValue subject;
 
     private void setSubject(Object value) {

@@ -60,11 +60,11 @@ public interface MetadataValue {
     public String asString();
 
     /**
-     * Returns the name of the {@link Plugin} that created this metadata item.
+     * Returns the {@link Plugin} that created this metadata item.
      *
-     * @return the name of the plugin that owns this metadata value.
+     * @return the plugin that owns this metadata value.
      */
-    public String getOwningPlugin();
+    public Plugin getOwningPlugin();
 
     /**
      * Invalidates this metadata item, forcing it to recompute when next accessed.

@@ -1,6 +1,5 @@
 package org.bukkit.plugin.messaging;
 
-import com.avaje.ebean.EbeanServer;
 import java.io.File;
 import java.io.InputStream;
 import org.bukkit.Server;
@@ -13,8 +12,20 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.PluginLogger;
 
-public class TestPlugin implements Plugin {
+import com.avaje.ebean.EbeanServer;
+
+public class TestPlugin extends Plugin {
     private boolean enabled = true;
+
+    private String pluginName;
+
+    public TestPlugin() {
+        super();
+    }
+
+    public TestPlugin(String pluginName) {
+        this.pluginName = pluginName;
+    }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -25,7 +36,7 @@ public class TestPlugin implements Plugin {
     }
 
     public PluginDescriptionFile getDescription() {
-        throw new UnsupportedOperationException("Not supported.");
+        return new PluginDescriptionFile(pluginName, "1.0", "test.test");
     }
 
     public FileConfiguration getConfig() {
@@ -100,4 +111,25 @@ public class TestPlugin implements Plugin {
         throw new UnsupportedOperationException("Not supported.");
     }
 
+    @Override
+    public int hashCode() {
+        return 31 + ((pluginName == null) ? 0 : pluginName.hashCode());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TestPlugin other = (TestPlugin) obj;
+        if (pluginName == null) {
+            if (other.pluginName != null)
+                return false;
+        } else if (!pluginName.equals(other.pluginName))
+            return false;
+        return true;
+    }
 }

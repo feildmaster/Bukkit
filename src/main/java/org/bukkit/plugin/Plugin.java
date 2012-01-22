@@ -11,25 +11,26 @@ import org.bukkit.generator.ChunkGenerator;
 
 import com.avaje.ebean.EbeanServer;
 
+import com.avaje.ebean.EbeanServer;
+
 /**
  * Represents a Plugin
  */
-public interface Plugin extends CommandExecutor {
-
+public abstract class Plugin implements CommandExecutor {
     /**
      * Returns the folder that the plugin data's files are located in. The
      * folder may not yet exist.
      *
      * @return The folder
      */
-    public File getDataFolder();
+    public abstract File getDataFolder();
 
     /**
      * Returns the plugin.yaml file containing the details for this plugin
      *
      * @return Contents of the plugin.yaml file
      */
-    public PluginDescriptionFile getDescription();
+    public abstract PluginDescriptionFile getDescription();
 
     /**
      * Gets a {@link FileConfiguration} for this plugin, read through "config.yml"
@@ -39,7 +40,7 @@ public interface Plugin extends CommandExecutor {
      *
      * @return Plugin configuration
      */
-    public FileConfiguration getConfig();
+    public abstract FileConfiguration getConfig();
 
     /**
      * Gets an embedded resource in this plugin
@@ -47,18 +48,18 @@ public interface Plugin extends CommandExecutor {
      * @param filename Filename of the resource
      * @return File if found, otherwise null
      */
-    public InputStream getResource(String filename);
+    public abstract InputStream getResource(String filename);
 
     /**
      * Saves the {@link FileConfiguration} retrievable by {@link #getConfig()}.
      */
-    public void saveConfig();
+    public abstract void saveConfig();
 
     /**
      * Saves the raw contents of the default config.yml file to the location retrievable by {@link #getConfig()}.
      * If there is no default config.yml embedded in the plugin, an empty config.yml file is saved.
      */
-    public void saveDefaultConfig();
+    public abstract void saveDefaultConfig();
 
     /**
      * Saves the raw contents of any resource embedded with a plugin's .jar file assuming it can be found using
@@ -69,70 +70,70 @@ public interface Plugin extends CommandExecutor {
      * @param replace if true, the embedded resource will overwrite the contents of an existing file.
      * @throws IllegalArgumentException if the resource path is null, empty, or points to a nonexistent resource.
      */
-    public void saveResource(String resourcePath, boolean replace);
+    public abstract void saveResource(String resourcePath, boolean replace);
 
     /**
      * Discards any data in {@link #getConfig()} and reloads from disk.
      */
-    public void reloadConfig();
+    public abstract void reloadConfig();
 
     /**
      * Gets the associated PluginLoader responsible for this plugin
      *
      * @return PluginLoader that controls this plugin
      */
-    public PluginLoader getPluginLoader();
+    public abstract PluginLoader getPluginLoader();
 
     /**
      * Returns the Server instance currently running this plugin
      *
      * @return Server running this plugin
      */
-    public Server getServer();
+    public abstract Server getServer();
 
     /**
      * Returns a value indicating whether or not this plugin is currently enabled
      *
      * @return true if this plugin is enabled, otherwise false
      */
-    public boolean isEnabled();
+    public abstract boolean isEnabled();
 
     /**
      * Called when this plugin is disabled
      */
-    public void onDisable();
+    public abstract void onDisable();
 
     /**
      * Called after a plugin is loaded but before it has been enabled.
      * When mulitple plugins are loaded, the onLoad() for all plugins is called before any onEnable() is called.
      */
-    public void onLoad();
+    public abstract void onLoad();
 
     /**
      * Called when this plugin is enabled
      */
-    public void onEnable();
+    public abstract void onEnable();
 
     /**
      * Simple boolean if we can still nag to the logs about things
      *
      * @return boolean whether we can nag
      */
-    public boolean isNaggable();
+    public abstract boolean isNaggable();
 
     /**
      * Set naggable state
      *
      * @param canNag is this plugin still naggable?
      */
-    public void setNaggable(boolean canNag);
+    public abstract void setNaggable(boolean canNag);
 
     /**
      * Gets the {@link EbeanServer} tied to this plugin
      *
      * @return Ebean server instance
      */
-    public EbeanServer getDatabase();
+    public abstract EbeanServer getDatabase();
 
     /**
      * Gets a {@link ChunkGenerator} for use in a default world, as specified in the server configuration
@@ -141,7 +142,7 @@ public interface Plugin extends CommandExecutor {
      * @param id Unique ID, if any, that was specified to indicate which generator was requested
      * @return ChunkGenerator for use in the default world generation
      */
-    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id);
+    public abstract ChunkGenerator getDefaultWorldGenerator(String worldName, String id);
 
     /**
      * Returns the primary logger associated with this server instance. The returned logger automatically
@@ -149,5 +150,32 @@ public interface Plugin extends CommandExecutor {
      *
      * @return Logger associated with this server
      */
-    public Logger getLogger();
+    public abstract Logger getLogger();
+
+    @Override
+    public int hashCode() {
+        return 31 + ((getDescription() != null && getDescription().getName() == null) ? 0 : getDescription().getName().hashCode());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Plugin other = (Plugin) obj;
+        if (getDescription() == null || other.getDescription() == null) {
+            return false;
+        }
+        if (getDescription().getName() == null || other.getDescription().getName() == null) {
+            return false;
+        }
+
+        return getDescription().getName().equals(other.getDescription().getName());
+    }
 }

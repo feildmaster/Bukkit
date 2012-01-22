@@ -83,7 +83,7 @@ public abstract class MetadataStoreBase<T> {
         String key = cachedDisambiguate(subject, metadataKey);
         List<MetadataValue> metadataList = metadataMap.get(key);
         for (int i = 0; i < metadataList.size(); i++) {
-            if (metadataList.get(i).getOwningPlugin().equals(owningPlugin.getDescription().getName())) {
+            if (metadataList.get(i).getOwningPlugin().equals(owningPlugin)) {
                 metadataList.remove(i);
             }
         }
@@ -103,7 +103,7 @@ public abstract class MetadataStoreBase<T> {
 
         for (List<MetadataValue> values : metadataMap.values()) {
             for (MetadataValue value : values) {
-                if (value.getOwningPlugin().equals(owningPlugin.getDescription().getName())) {
+                if (value.getOwningPlugin().equals(owningPlugin)) {
                     value.invalidate();
                 }
             }

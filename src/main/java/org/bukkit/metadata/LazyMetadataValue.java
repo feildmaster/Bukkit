@@ -18,7 +18,7 @@ public class LazyMetadataValue implements MetadataValue {
     private Callable<Object> lazyValue;
     private CacheStrategy cacheStrategy;
     private SoftReference<Object> internalValue = new SoftReference<Object>(null);
-    private String owningPlugin;
+    private Plugin owningPlugin;
     private static final Object ACTUALLY_NULL = new Object();
 
     /**
@@ -44,11 +44,11 @@ public class LazyMetadataValue implements MetadataValue {
         Validate.notNull(lazyValue, "lazyValue cannot be null");
 
         this.lazyValue = lazyValue;
-        this.owningPlugin = owningPlugin.getDescription().getName().intern();
+        this.owningPlugin = owningPlugin;
         this.cacheStrategy = cacheStrategy;
     }
 
-    public String getOwningPlugin() {
+    public Plugin getOwningPlugin() {
         return owningPlugin;
     }
 
