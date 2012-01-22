@@ -94,7 +94,7 @@ public class LazyMetadataValue implements MetadataValue {
             return ((Number) value).intValue() != 0;
         }
         if (value instanceof String) {
-            return ((String) value).equalsIgnoreCase("TRUE");
+            return Boolean.getBoolean((String) value);
         }
         return value != null;
     }
