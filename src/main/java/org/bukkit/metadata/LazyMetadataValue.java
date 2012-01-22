@@ -3,6 +3,7 @@ package org.bukkit.metadata;
 import java.lang.ref.SoftReference;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.NumberConversions;
 
@@ -38,15 +39,9 @@ public class LazyMetadataValue implements MetadataValue {
      * @param lazyValue the lazy value assigned to this metadata value.
      */
     public LazyMetadataValue(Plugin owningPlugin, CacheStrategy cacheStrategy, Callable<Object> lazyValue) {
-        if (owningPlugin == null) {
-            throw new IllegalArgumentException("owningPlugin cannot be null");
-        }
-        if (cacheStrategy == null) {
-            throw new IllegalArgumentException("cacheStrategy cannot be null");
-        }
-        if (lazyValue == null) {
-            throw new IllegalArgumentException("lazyValue cannot be null");
-        }
+        Validate.notNull(owningPlugin, "owningPlugin cannot be null");
+        Validate.notNull(cacheStrategy, "cacheStrategy cannot be null");
+        Validate.notNull(lazyValue, "lazyValue cannot be null");
 
         this.lazyValue = lazyValue;
         this.owningPlugin = owningPlugin.getDescription().getName().intern();
