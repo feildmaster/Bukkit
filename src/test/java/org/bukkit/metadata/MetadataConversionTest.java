@@ -15,6 +15,7 @@
 
 package org.bukkit.metadata;
 
+import org.bukkit.plugin.Plugin;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -22,68 +23,80 @@ import static org.junit.Assert.assertEquals;
 /**
  */
 public class MetadataConversionTest {
+    private Plugin plugin = new MockPlugin("x");
+    private FixedMetadataValue subject;
+
+    private void setSubject(Object value) {
+        subject = new FixedMetadataValue(plugin, value);
+    }
+
     @Test
     public void testFromInt() {
-        FixedMetadataValue val = new FixedMetadataValue(new MockPlugin("x"), 10);
-        assertEquals(10, val.asInt());
-        assertEquals(10, val.asFloat(), 0.000001);
-        assertEquals(10, val.asDouble(), 0.000001);
-        assertEquals(10, val.asLong());
-        assertEquals(10, val.asShort());
-        assertEquals(10, val.asByte());
-        assertEquals(true, val.asBoolean());
-        assertEquals("10", val.asString());
+        setSubject(10);
+
+        assertEquals(10, subject.asInt());
+        assertEquals(10, subject.asFloat(), 0.000001);
+        assertEquals(10, subject.asDouble(), 0.000001);
+        assertEquals(10, subject.asLong());
+        assertEquals(10, subject.asShort());
+        assertEquals(10, subject.asByte());
+        assertEquals(true, subject.asBoolean());
+        assertEquals("10", subject.asString());
     }
 
     @Test
     public void testFromFloat() {
-        FixedMetadataValue val = new FixedMetadataValue(new MockPlugin("x"), 10.5);
-        assertEquals(10, val.asInt());
-        assertEquals(10.5, val.asFloat(), 0.000001);
-        assertEquals(10.5, val.asDouble(), 0.000001);
-        assertEquals(10, val.asLong());
-        assertEquals(10, val.asShort());
-        assertEquals(10, val.asByte());
-        assertEquals(true, val.asBoolean());
-        assertEquals("10.5", val.asString());
+        setSubject(10.5);
+
+        assertEquals(10, subject.asInt());
+        assertEquals(10.5, subject.asFloat(), 0.000001);
+        assertEquals(10.5, subject.asDouble(), 0.000001);
+        assertEquals(10, subject.asLong());
+        assertEquals(10, subject.asShort());
+        assertEquals(10, subject.asByte());
+        assertEquals(true, subject.asBoolean());
+        assertEquals("10.5", subject.asString());
     }
 
     @Test
     public void testFromNumericString() {
-        FixedMetadataValue val = new FixedMetadataValue(new MockPlugin("x"), "10");
-        assertEquals(10, val.asInt());
-        assertEquals(10, val.asFloat(), 0.000001);
-        assertEquals(10, val.asDouble(), 0.000001);
-        assertEquals(10, val.asLong());
-        assertEquals(10, val.asShort());
-        assertEquals(10, val.asByte());
-        assertEquals(false, val.asBoolean());
-        assertEquals("10", val.asString());
+        setSubject("10");
+
+        assertEquals(10, subject.asInt());
+        assertEquals(10, subject.asFloat(), 0.000001);
+        assertEquals(10, subject.asDouble(), 0.000001);
+        assertEquals(10, subject.asLong());
+        assertEquals(10, subject.asShort());
+        assertEquals(10, subject.asByte());
+        assertEquals(false, subject.asBoolean());
+        assertEquals("10", subject.asString());
     }
 
     @Test
     public void testFromNonNumericString() {
-        FixedMetadataValue val = new FixedMetadataValue(new MockPlugin("x"), "true");
-        assertEquals(0, val.asInt());
-        assertEquals(0, val.asFloat(), 0.000001);
-        assertEquals(0, val.asDouble(), 0.000001);
-        assertEquals(0, val.asLong());
-        assertEquals(0, val.asShort());
-        assertEquals(0, val.asByte());
-        assertEquals(true, val.asBoolean());
-        assertEquals("true", val.asString());
+        setSubject("true");
+
+        assertEquals(0, subject.asInt());
+        assertEquals(0, subject.asFloat(), 0.000001);
+        assertEquals(0, subject.asDouble(), 0.000001);
+        assertEquals(0, subject.asLong());
+        assertEquals(0, subject.asShort());
+        assertEquals(0, subject.asByte());
+        assertEquals(true, subject.asBoolean());
+        assertEquals("true", subject.asString());
     }
 
     @Test
     public void testFromNull() {
-        FixedMetadataValue val = new FixedMetadataValue(new MockPlugin("x"), null);
-        assertEquals(0, val.asInt());
-        assertEquals(0, val.asFloat(), 0.000001);
-        assertEquals(0, val.asDouble(), 0.000001);
-        assertEquals(0, val.asLong());
-        assertEquals(0, val.asShort());
-        assertEquals(0, val.asByte());
-        assertEquals(false, val.asBoolean());
-        assertEquals("", val.asString());
+        setSubject(null);
+
+        assertEquals(0, subject.asInt());
+        assertEquals(0, subject.asFloat(), 0.000001);
+        assertEquals(0, subject.asDouble(), 0.000001);
+        assertEquals(0, subject.asLong());
+        assertEquals(0, subject.asShort());
+        assertEquals(0, subject.asByte());
+        assertEquals(false, subject.asBoolean());
+        assertEquals("", subject.asString());
     }
 }
