@@ -104,10 +104,11 @@ public class LazyMetadataValue implements MetadataValue {
 
     public String asString() {
         Object value = value();
-        if (value != null) {
-            return value.toString();
+
+        if (value == null) {
+            return "";
         }
-        return "";
+        return value.toString();
     }
 
     /**
