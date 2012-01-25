@@ -564,12 +564,7 @@ public final class SimplePluginManager implements PluginManager {
                     throw new IllegalPluginAccessException("Plugin attempted to register " + listener + " while not enabled");
         }
         for (Map.Entry<Class<? extends Event>, Set<RegisteredListener>> entry : plugin.getPluginLoader().createRegisteredListeners(listener, plugin).entrySet()) {
-            Class<? extends Event> delegatedClass = getRegistrationClass(entry.getKey());
-            if (!entry.getKey().equals(delegatedClass)) {
-                plugin.getServer().getLogger().severe("Plugin attempted to register delegated event class " + entry.getKey() + ". It should be using " + delegatedClass + "!");
-                continue;
-            }
-            getEventListeners(delegatedClass).registerAll(entry.getValue());
+            getEventListeners(getRegistrationClass(entry.getKey())).registerAll(entry.getValue());
         }
 
     }
