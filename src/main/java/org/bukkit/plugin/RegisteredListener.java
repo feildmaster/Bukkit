@@ -14,7 +14,7 @@ public class RegisteredListener {
     private final Plugin plugin;
     private final EventExecutor executor;
 
-    public RegisteredListener(final Listener pluginListener, final EventExecutor eventExecutor, final EventPriority eventPriority, final Plugin registeredPlugin) {
+    public RegisteredListener(final Listener pluginListener, final EventExecutor eventExecutor, final EventPriority eventPriority, final Plugin registeredPlugin, final boolean receiveSubEvents) {
         listener = pluginListener;
         priority = eventPriority;
         plugin = registeredPlugin;
