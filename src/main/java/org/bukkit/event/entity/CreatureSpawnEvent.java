@@ -3,7 +3,6 @@ package org.bukkit.event.entity;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.Location;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -11,35 +10,15 @@ import org.bukkit.event.HandlerList;
  * <p />
  * If a Creature Spawn event is cancelled, the creature will not spawn.
  */
-public class CreatureSpawnEvent extends EntityEvent implements Cancellable {
+public class CreatureSpawnEvent extends EntitySpawnEvent {
     private static final HandlerList handlers = new HandlerList();
-    private final Location location;
-    private boolean canceled;
     private final CreatureType creatureType;
     private final SpawnReason spawnReason;
 
     public CreatureSpawnEvent(final Entity spawnee, final CreatureType mobtype, final Location loc, final SpawnReason spawnReason) {
-        super(spawnee);
+        super(spawnee, loc);
         this.creatureType = mobtype;
-        this.location = loc;
         this.spawnReason = spawnReason;
-    }
-
-    public boolean isCancelled() {
-        return canceled;
-    }
-
-    public void setCancelled(boolean cancel) {
-        canceled = cancel;
-    }
-
-    /**
-     * Gets the location at which the creature is spawning.
-     *
-     * @return The location at which the creature is spawning
-     */
-    public Location getLocation() {
-        return location;
     }
 
     /**
