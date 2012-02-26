@@ -3,6 +3,7 @@ package org.bukkit.metadata;
 import java.io.File;
 import java.io.InputStream;
 
+import java.util.logging.Logger;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,7 +12,6 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
-import org.bukkit.util.config.Configuration;
 
 import com.avaje.ebean.EbeanServer;
 
@@ -20,21 +20,17 @@ import com.avaje.ebean.EbeanServer;
  */
 public class MockPlugin implements Plugin {
     private String pluginName;
-    
+
     public MockPlugin(String pluginName) {
         this.pluginName = pluginName;
     }
-    
+
     public File getDataFolder() {
         return null;
     }
 
     public PluginDescriptionFile getDescription() {
         return new PluginDescriptionFile(pluginName, "1.0", "test.test");
-    }
-
-    public Configuration getConfiguration() {
-        return null;
     }
 
     public FileConfiguration getConfig() {
@@ -46,11 +42,9 @@ public class MockPlugin implements Plugin {
     }
 
     public void saveConfig() {
-
     }
 
     public void reloadConfig() {
-
     }
 
     public PluginLoader getPluginLoader() {
@@ -66,15 +60,12 @@ public class MockPlugin implements Plugin {
     }
 
     public void onDisable() {
-
     }
 
     public void onLoad() {
-
     }
 
     public void onEnable() {
-
     }
 
     public boolean isNaggable() {
@@ -95,5 +86,15 @@ public class MockPlugin implements Plugin {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         return false;
+    }
+
+    public void saveDefaultConfig() {
+    }
+
+    public void saveResource(String resourcePath, boolean replace) {
+    }
+
+    public Logger getLogger() {
+        return null;
     }
 }
