@@ -17,7 +17,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
     private int amount = 0;
     private MaterialData data = null;
     private short durability = 0;
-    private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+    protected Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
 
     public ItemStack(final int type) {
         this(type, 1);
@@ -104,7 +104,10 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
      * @param type New type id to set the items in this stack to
      */
     public void setTypeId(int type) {
-        this.type = type;
+        this.type = type > 0 ? type : 0;
+        if (this.type == 0) {
+            this.amount = 0;
+        }
         createData((byte) 0);
     }
 
@@ -123,7 +126,11 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
      * @param amount New amount of items in this stack
      */
     public void setAmount(int amount) {
-        this.amount = amount;
+        if (amount <= 0) {
+            this.setTypeId(0);
+        } else if (this.type > 0) {
+            this.amount = amount;
+        }
     }
 
     /**
@@ -250,7 +257,8 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
      * @return True if this has the given enchantment
      */
     public boolean containsEnchantment(Enchantment ench) {
-        return enchantments.containsKey(ench);
+        Integer level = enchantments.get(ench);
+        return level != null && level > 0;
     }
 
     /**
@@ -260,7 +268,8 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
      * @return Level of the enchantment, or 0
      */
     public int getEnchantmentLevel(Enchantment ench) {
-        return enchantments.get(ench);
+        Integer level = enchantments.get(ench);
+        return level == null ? 0 : level;
     }
 
     /**
@@ -330,7 +339,9 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
      * @param level Level of the enchantment
      */
     public void addUnsafeEnchantment(Enchantment ench, int level) {
-        enchantments.put(ench, level);
+        if (ench != null) {
+            enchantments.put(ench, level);
+        }
     }
 
     /**
