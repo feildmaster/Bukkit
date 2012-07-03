@@ -28,6 +28,7 @@ import org.bukkit.plugin.messaging.PluginMessageRecipient;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.avaje.ebean.config.ServerConfig;
+import org.bukkit.inventory.ItemFactory;
 
 /**
  * Represents a server implementation
@@ -659,4 +660,6 @@ public interface Server extends PluginMessageRecipient {
      * @return The configured WarningState
      */
     public WarningState getWarningState();
+
+    ItemFactory getItemFactory();
 }

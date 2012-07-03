@@ -4,9 +4,11 @@ import com.google.common.collect.ImmutableMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 /**
@@ -18,6 +20,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
     private MaterialData data = null;
     private short durability = 0;
     private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+    private ItemMeta meta;
 
     public ItemStack(final int type) {
         this(type, 1);
@@ -105,6 +108,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
      */
     public void setTypeId(int type) {
         this.type = type;
+        this.meta = null;
         createData((byte) 0);
     }
 
@@ -214,6 +218,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
         }
 
         ItemStack item = (ItemStack) obj;
+        // Account for ItemMeta
 
         return item.getAmount() == getAmount() && item.getTypeId() == getTypeId() && getDurability() == item.getDurability() && getEnchantments().equals(item.getEnchantments());
     }
@@ -404,5 +409,35 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
         }
 
         return result;
+    }
+
+    /**
+     * Get a copy of this ItemStack's {@link ItemMeta}.
+     *
+     * @return a copy of the current ItemStack's ItemData
+     */
+    public ItemMeta getItemMeta() {
+        if (this.meta == null) {
+            this.meta = Bukkit.getServer().getItemFactory().getItemMeta(this);
+        }
+
+        return this.meta.clone();
+    }
+
+    /**
+     * Set the ItemMeta of this ItemStack
+     * <p />
+     * ItemMeta may not be null and must be a valid ItemMeta for the ItemStack.
+     *
+     * @param itemMeta new ItemMeta
+     * @return True if successfully applied ItemMeta
+     */
+    public boolean setItemMeta(ItemMeta itemMeta) {
+        if (Bukkit.getServer().getItemFactory().isValidMeta(meta, this)) {
+            return false;
+        }
+
+        this.meta = itemMeta.clone();
+        return true;
     }
 }
