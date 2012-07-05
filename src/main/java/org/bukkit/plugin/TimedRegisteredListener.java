@@ -11,7 +11,7 @@ import org.bukkit.event.Listener;
 public class TimedRegisteredListener extends RegisteredListener {
     private int count;
     private long totalTime;
-    private Event event;
+    private Class<? extends Event> eventClass;
     private boolean multiple = false;
 
     public TimedRegisteredListener(final Listener pluginListener, final EventExecutor eventExecutor, final EventPriority eventPriority, final Plugin registeredPlugin, final boolean listenCancelled) {
@@ -25,10 +25,10 @@ public class TimedRegisteredListener extends RegisteredListener {
             return;
         }
         count++;
-        if (this.event == null) {
-            this.event = event;
+        if (this.eventClass == null) {
+            this.eventClass = event.getClass();
         }
-        else if (!this.event.getClass().equals(event.getClass())) {
+        else if (!this.eventClass.equals(event.getClass())) {
             multiple = true;
         }
         long start = System.nanoTime();
@@ -63,12 +63,12 @@ public class TimedRegisteredListener extends RegisteredListener {
     }
 
     /**
-     * Gets the first event this listener handled
+     * Gets the class of the first event this listener handled
      *
-     * @return An event handled by this RegisteredListener
+     * @return The first event class handled by this RegisteredListener
      */
-    public Event getEvent() {
-        return event;
+    public Class<? extends Event> getEventClass() {
+        return eventClass;
     }
 
     /**
