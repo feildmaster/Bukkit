@@ -442,6 +442,12 @@ public final class SimplePluginManager implements PluginManager {
         }
     }
 
+    public void softReloadPlugins() {
+        for (Plugin plugin : getPlugins()) {
+            plugin.onSoftReload();
+        }
+    }
+
     /**
      * Calls an event with the given details.<br>
      * This method only synchronizes when the event is not asynchronous.

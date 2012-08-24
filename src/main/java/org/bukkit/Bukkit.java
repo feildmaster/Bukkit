@@ -183,6 +183,10 @@ public final class Bukkit {
         server.reload();
     }
 
+    public static void reload(boolean soft) {
+        server.reload(soft);
+    }
+
     public static Logger getLogger() {
         return server.getLogger();
     }

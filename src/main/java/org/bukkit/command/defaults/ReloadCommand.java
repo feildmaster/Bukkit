@@ -9,7 +9,7 @@ public class ReloadCommand extends BukkitCommand {
     public ReloadCommand(String name) {
         super(name);
         this.description = "Reloads the server configuration and plugins";
-        this.usageMessage = "/reload";
+        this.usageMessage = "/reload [soft]";
         this.setPermission("bukkit.command.reload");
         this.setAliases(Arrays.asList("rl"));
     }
@@ -18,7 +18,12 @@ public class ReloadCommand extends BukkitCommand {
     public boolean execute(CommandSender sender, String currentAlias, String[] args) {
         if (!testPermission(sender)) return true;
 
-        Bukkit.reload();
+        if (args.length == 0) {
+            Bukkit.reload();
+        } else {
+            Bukkit.reload(args[0].equalsIgnoreCase("soft"));
+        }
+
         sender.sendMessage(ChatColor.GREEN + "Reload complete.");
 
         return true;

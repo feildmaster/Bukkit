@@ -89,6 +89,11 @@ public interface PluginManager {
     public void clearPlugins();
 
     /**
+     * Triggers a soft reload on all plugins
+     */
+    public void softReloadPlugins();
+
+    /**
      * Calls an event with the given details
      *
      * @param event Event details

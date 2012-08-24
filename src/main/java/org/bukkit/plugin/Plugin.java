@@ -116,6 +116,11 @@ public interface Plugin extends CommandExecutor {
     public void onEnable();
 
     /**
+     * Called when the server is soft reloaded
+     */
+    public void onSoftReload();
+
+    /**
      * Simple boolean if we can still nag to the logs about things
      *
      * @return boolean whether we can nag

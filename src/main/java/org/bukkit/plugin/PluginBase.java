@@ -6,6 +6,14 @@ package org.bukkit.plugin;
  * Extend this class if your plugin is not a {@link org.bukkit.plugin.java.JavaPlugin}
  */
 public abstract class PluginBase implements Plugin {
+    public void onLoad() {}
+
+    public void onDisable() {}
+
+    public void onEnable() {}
+
+    public void onSoftReload() {}
+
     @Override
     public final int hashCode() {
         return getName().hashCode();

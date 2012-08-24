@@ -365,9 +365,20 @@ public interface Server extends PluginMessageRecipient {
     public MapView createMap(World world);
 
     /**
-     * Reloads the server, refreshing settings and plugin information
+     * Performs a hard server reload, refreshing settings and plugins
      */
     public void reload();
+
+    /**
+     * Performs a server reload, refreshing settings and plugins
+     * <p />
+     * By setting soft to true, the server will not do a full reload on plugins
+     * Instead, plugins will have their onSoftReload function called, where they
+     * can run their tasks (such as reloading configuration)
+     *
+     * @param soft If true, will preform a soft reload
+     */
+    public void reload(boolean soft);
 
     /**
      * Returns the primary logger associated with this server instance
