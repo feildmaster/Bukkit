@@ -42,6 +42,24 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
     }
 
     /**
+     * Check if action is a left click
+     *
+     * @return True if left click
+     */
+    public boolean isLeftClick() {
+        return action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR;
+    }
+
+    /**
+     * Check if action is a right click
+     *
+     * @return true if right click
+     */
+    public boolean isRightClick() {
+        return action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR;
+    }
+
+    /**
      * Gets the cancellation state of this event. Set to true if you
      * want to prevent buckets from placing water and so forth
      *
