@@ -1,9 +1,13 @@
 package org.bukkit.command.defaults;
 
 import java.util.List;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.command.BlockCommandSender;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.HumanEntity;
 
 public abstract class VanillaCommand extends Command {
     static final int MAX_COORD = 30000000;
@@ -77,5 +81,20 @@ public abstract class VanillaCommand extends Command {
         }
 
         return string.toString();
+    }
+
+    World getWorld(CommandSender sender) {
+        World world = null;
+        if (sender instanceof HumanEntity) {
+            world = ((HumanEntity) sender).getWorld();
+        } else if (sender instanceof BlockCommandSender) {
+            world = ((BlockCommandSender) sender).getBlock().getWorld();
+        }
+
+        if (world != null) {
+            return world;
+        }
+
+        return Bukkit.getWorlds().get(0);
     }
 }

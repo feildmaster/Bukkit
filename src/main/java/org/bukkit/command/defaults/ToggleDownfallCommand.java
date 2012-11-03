@@ -33,10 +33,8 @@ public class ToggleDownfallCommand extends VanillaCommand {
                 sender.sendMessage(ChatColor.RED + "No world exists with the name '" + args[0] + "'");
                 return true;
             }
-        } else if (sender instanceof Player) {
-            world = ((Player) sender).getWorld();
         } else {
-            world = Bukkit.getWorlds().get(0);
+            world = getWorld(sender);
         }
 
         Command.broadcastCommandMessage(sender, "Toggling downfall " + (world.hasStorm() ? "off" : "on") + " for world '" + world.getName() + "'");

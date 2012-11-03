@@ -30,7 +30,7 @@ public class GameRuleCommand extends VanillaCommand {
 
         if (args.length > 0) {
             String rule = args[0];
-            World world = getGameWorld(sender);
+            World world = getWorld(sender);
 
             if (world.isGameRule(rule)) {
                 if (args.length > 1) {
@@ -49,21 +49,10 @@ public class GameRuleCommand extends VanillaCommand {
             return true;
         } else {
             sender.sendMessage(ChatColor.RED + "Usage: " + usageMessage);
-            sender.sendMessage("Rules: " + this.createString(getGameWorld(sender).getGameRules(), 0, ", "));
+            sender.sendMessage("Rules: " + this.createString(getWorld(sender).getGameRules(), 0, ", "));
 
             return true;
         }
-    }
-
-    private World getGameWorld(CommandSender sender) {
-        if (sender instanceof HumanEntity) {
-            World world = ((HumanEntity) sender).getWorld();
-            if (world != null) {
-                return world;
-            }
-        }
-
-        return Bukkit.getWorlds().get(0);
     }
 
     @Override
@@ -78,7 +67,7 @@ public class GameRuleCommand extends VanillaCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], Arrays.asList(getGameWorld(sender).getGameRules()), new ArrayList<String>());
+            return StringUtil.copyPartialMatches(args[0], Arrays.asList(getWorld(sender).getGameRules()), new ArrayList<String>());
         }
 
         if (args.length == 2) {
