@@ -76,7 +76,7 @@ public class Skull extends MaterialData implements Directional {
 
             case 0x4:
             default:
-                return BlockFace.EAST;
+                return BlockFace.WEST;
         }
     }
 

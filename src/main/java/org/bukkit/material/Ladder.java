@@ -56,7 +56,7 @@ public class Ladder extends SimpleAttachableMaterialData {
      * Sets the direction this ladder is facing
      */
     public void setFacingDirection(BlockFace face) {
-        byte data = (byte) 0x0;
+        byte data = (byte) 0x2;
 
         switch (face) {
         case SOUTH:
