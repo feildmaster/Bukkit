@@ -8,12 +8,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.entity.Player;
 
 public class StopCommand extends VanillaCommand {
     public StopCommand() {
         super("stop");
         this.description = "Stops the server";
-        this.usageMessage = "/stop";
+        this.usageMessage = "/stop [message...]";
         this.setPermission("bukkit.command.stop");
     }
 
@@ -21,8 +23,22 @@ public class StopCommand extends VanillaCommand {
     public boolean execute(CommandSender sender, String currentAlias, String[] args) {
         if (!testPermission(sender)) return true;
 
-        Command.broadcastCommandMessage(sender, "Stopping the server..");
+        String stopMessage = this.createString(args, 0);
+
+        StringBuilder broadcastMessage = new StringBuilder();
+        broadcastMessage.append("Stopping the server...");
+        if (StringUtils.isNotEmpty(stopMessage)) {
+            broadcastMessage.append("Reason: ").append(stopMessage);
+        }
+
+        Command.broadcastCommandMessage(sender, broadcastMessage.toString());
         Bukkit.shutdown();
+
+        if (StringUtils.isNotEmpty(stopMessage)) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.kickPlayer(stopMessage);
+            }
+        }
 
         return true;
     }
