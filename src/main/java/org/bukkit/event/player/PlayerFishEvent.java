@@ -12,6 +12,7 @@ public class PlayerFishEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private final Entity entity;
     private boolean cancel = false;
+    private int exp;
     private final State state;
 
     public PlayerFishEvent(final Player player, final Entity entity, final State state) {
@@ -35,6 +36,30 @@ public class PlayerFishEvent extends PlayerEvent implements Cancellable {
 
     public void setCancelled(boolean cancel) {
         this.cancel = cancel;
+    }
+
+    /**
+     * Gets the amount of experience received when fishing.
+     * <p />
+     * Please note: This value has no effect unless the event state is {@link State#CAUGHT_FISH} and is
+     * thrown by the server.
+     *
+     * @return the amount of experience to drop
+     */
+    public int getExpToDrop() {
+        return exp;
+    }
+
+    /**
+     * Sets the amount of experience received when fishing.
+     * <p />
+     * Please note: This value has no effect unless the event state is {@link State#CAUGHT_FISH} and is
+     * thrown by the server.
+     *
+     * @param amount the amount of experience to drop
+     */
+    public void setExpToDrop(int amount) {
+        exp = amount;
     }
 
     /**
